@@ -23,7 +23,7 @@ require {
 	
 
 	class filesystem associate;
-	class file { append create execute execute_no_trans getattr map open read setattr unlink write rename };
+	class file { add_name remove_name append create execute execute_no_trans getattr map open read setattr unlink write rename search };
         class dir { add_name remove_name create read rmdir search write getattr setattr };
 	class lnk_file { create getattr unlink };
         class tcp_socket { accept listen name_bind name_connect };

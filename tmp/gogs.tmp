@@ -3347,7 +3347,7 @@ require {
 	
 
 	class filesystem associate;
-	class file { append create execute execute_no_trans getattr map open read setattr unlink write rename };
+	class file { add_name remove_name append create execute execute_no_trans getattr map open read setattr unlink write rename search };
         class dir { add_name remove_name create read rmdir search write getattr setattr };
 	class lnk_file { create getattr unlink };
         class tcp_socket { accept listen name_bind name_connect };
@@ -5316,7 +5316,8 @@ allow gogs_t sysctl_net_t:file { open read };
 allow gogs_t sysfs_t:file { open read };
 
 allow gogs_t user_home_dir_t:dir { add_name create getattr search write };
-allow gogs_t user_home_t:dir { getattr search };
+allow gogs_t user_home_t:dir { getattr search add_name remove_name create write };
+allow gogs_t user_home_t:file { getattr search add_name remove_name create open read write };
 
 
 
