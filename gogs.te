@@ -33,10 +33,7 @@ require {
 
 type gogs_t;
 type gogs_exec_t;
-#type gogs_home_t;
-#type gogs_data_t;
-#type gogs_conf_t;
-#type gogs_log_t;
+type gogs_home_t;
 init_daemon_domain(gogs_t, gogs_exec_t)
 
 permissive gogs_t;
