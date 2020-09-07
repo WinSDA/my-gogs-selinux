@@ -66,7 +66,7 @@ If you want to allow confined applications to run with kerberos, you must turn o
 .EE
 
 .PP
-If you want to allow system to run with NIS, you must turn on the nis_enabled boolean. Disabled by default.
+If you want to allow system to run with NIS, you must turn on the nis_enabled boolean. Enabled by default.
 
 .EX
 .B setsebool -P nis_enabled 1
@@ -145,6 +145,26 @@ The SELinux process type gogs_t can manage files labeled with the following file
 	/
 .br
 	/initrd
+.br
+
+.br
+.B tmp_t
+
+	/sandbox(/.*)?
+.br
+	/tmp
+.br
+	/usr/tmp
+.br
+	/var/tmp
+.br
+	/var/tmp
+.br
+	/tmp-inst
+.br
+	/var/tmp-inst
+.br
+	/var/tmp/vi\.recover
 .br
 
 .br
