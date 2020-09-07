@@ -1,0 +1,79 @@
+policy_module(gogs, 1.0.0)
+
+########################################
+#
+# Declarations
+#
+
+require {
+        type default_t; 
+	type sysfs_t;
+        type init_t;
+        type var_lib_t;
+        type ntop_port_t;
+        type mysqld_port_t;
+        type unlabeled_t;
+        type sysctl_net_t;
+        type bin_t;
+	type user_home_t;
+	type user_home_dir_t;
+#	type tmp_t;
+
+	class file { append create execute execute_no_trans getattr map open read setattr unlink write };
+        class tcp_socket { accept listen name_bind name_connect };
+        class dir { add_name remove_name create read rmdir search write getattr setattr };
+        class process2 nnp_transition;
+}
+
+type gogs_t;
+type gogs_exec_t;
+type gogs_home_t;
+type gogs_data_t;
+type gogs_conf_t;
+type gogs_log_t;
+init_daemon_domain(gogs_t, gogs_exec_t)
+
+permissive gogs_t;
+
+########################################
+#
+# gogs local policy
+#
+allow gogs_t self:fifo_file rw_fifo_file_perms;
+allow gogs_t self:unix_stream_socket create_stream_socket_perms;
+
+domain_use_interactive_fds(gogs_t)
+
+files_read_etc_files(gogs_t)
+
+auth_use_nsswitch(gogs_t)
+
+logging_send_audit_msgs(gogs_t)
+
+miscfiles_read_localization(gogs_t)
+
+sysnet_dns_name_resolve(gogs_t)
+
+############## GOGS POLICIES #################
+#============= init_t ==============
+allow init_t gogs_t:process2 nnp_transition;
+allow init_t default_t:dir rmdir;
+allow init_t default_t:file { create open unlink write };
+
+#============= gogs_t ==============
+allow gogs_t ntop_port_t:tcp_socket name_bind;
+
+allow gogs_t sysctl_net_t:dir search;
+allow gogs_t sysctl_net_t:file { open read };
+
+allow gogs_t sysfs_t:file { open read };
+
+allow gogs_t user_home_dir_t:dir { add_name create getattr search write };
+allow gogs_t user_home_t:dir { getattr search };
+
+#allow gogs_t tmp_t:dir { add_name remove_name create getattr setattr search write open rmdir }
+
+
+allow gogs_t bin_t:file { execute execute_no_trans };
+allow gogs_t mysqld_port_t:tcp_socket name_connect;
+

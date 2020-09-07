@@ -1,0 +1,5 @@
+/home/gogs/gogs(/.*)?		--	gen_context(system_u:object_r:gogs_home_t,s0)
+#/home/gogs/gogs/gogs		--	gen_context(system_u:object_r:gogs_exec_t,s0)
+#/home/gogs/gogs/custom/conf/app.ini		--	gen_context(system_u:object_r:gogs_conf_t,s0)
+#/home/gogs/gogs/log(/.*)?		--	gen_context(system_u:object_r:gogs_log_t,s0)
+#/home/gogs/gogs-repositories(/.*)?		--	gen_context(system_u:object_r:gogs_data_t,s0)
