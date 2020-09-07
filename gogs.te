@@ -20,12 +20,11 @@ require {
 	type tmp_t;
 	type shell_exec_t;
         type fs_t;
-	type unconfined_t;
 	
 
 	class filesystem associate;
-	class file { append create execute execute_no_trans getattr map open read setattr unlink write rename relabelto relabelfrom };
-        class dir { add_name remove_name create read rmdir search write getattr setattr relabelto relabelfrom };
+	class file { append create execute execute_no_trans getattr map open read setattr unlink write rename };
+        class dir { add_name remove_name create read rmdir search write getattr setattr };
 	class lnk_file { create getattr unlink };
         class tcp_socket { accept listen name_bind name_connect };
         class process2 nnp_transition;
@@ -65,14 +64,6 @@ sysnet_dns_name_resolve(gogs_t)
 
 #============= gogs_home_t ==============
 allow gogs_home_t fs_t:filesystem associate;
-
-#============= unconfined_t ==============
-allow unconfined_t gogs_data_t:dir { getattr open read search relabelto relabelfrom };
-allow unconfined_t gogs_data_t:file { getattr open read relabelto relabelfrom };
-allow unconfined_t gogs_home_t:dir { getattr open read search relabelto relabelfrom };
-allow unconfined_t gogs_home_t:file { getattr open read relabelto relabelfrom };
-allow unconfined_t gogs_log_t:dir { getattr open read search relabelto relabelfrom };
-allow unconfined_t gogs_log_t:file { getattr open read relabelto };
 
 ############## GOGS POLICIES #################
 #============= init_t ==============
