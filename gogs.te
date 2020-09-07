@@ -22,7 +22,6 @@ require {
         type fs_t;
 	type ssh_home_t;	
 
-	class filesystem associate;
 	class file { add_name remove_name append create execute execute_no_trans getattr map open read setattr unlink write rename search ioctl link };
         class dir { add_name remove_name create read rmdir search write getattr setattr };
 	class lnk_file { create getattr unlink };
@@ -33,18 +32,10 @@ require {
 
 type gogs_t;
 type gogs_exec_t;
-type gogs_home_t;
-type gogs_log_t;
-type gogs_conf_t;
 
 init_daemon_domain(gogs_t, gogs_exec_t)
 
 permissive gogs_t;
-
-files_type(gogs_home_t);
-files_type(gogs_conf_t);
-files_type(gogs_log_t);
-
 
 ########################################
 #
@@ -67,7 +58,6 @@ sysnet_dns_name_resolve(gogs_t)
 
 
 #============= gogs_home_t ==============
-allow gogs_home_t fs_t:filesystem associate;
 allow gogs_t gogs_exec_t:file execute_no_trans;
 
 

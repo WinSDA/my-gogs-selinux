@@ -66,7 +66,7 @@ If you want to allow confined applications to run with kerberos, you must turn o
 .EE
 
 .PP
-If you want to allow system to run with NIS, you must turn on the nis_enabled boolean. Enabled by default.
+If you want to allow system to run with NIS, you must turn on the nis_enabled boolean. Disabled by default.
 
 .EX
 .B setsebool -P nis_enabled 1
@@ -148,6 +148,40 @@ The SELinux process type gogs_t can manage files labeled with the following file
 .br
 
 .br
+.B ssh_home_t
+
+	/var/lib/[^/]+/\.ssh(/.*)?
+.br
+	/root/\.ssh(/.*)?
+.br
+	/var/lib/one/\.ssh(/.*)?
+.br
+	/var/lib/pgsql/\.ssh(/.*)?
+.br
+	/var/lib/openshift/[^/]+/\.ssh(/.*)?
+.br
+	/var/lib/amanda/\.ssh(/.*)?
+.br
+	/var/lib/stickshift/[^/]+/\.ssh(/.*)?
+.br
+	/var/lib/gitolite/\.ssh(/.*)?
+.br
+	/var/lib/nocpulse/\.ssh(/.*)?
+.br
+	/var/lib/gitolite3/\.ssh(/.*)?
+.br
+	/var/lib/openshift/gear/[^/]+/\.ssh(/.*)?
+.br
+	/root/\.shosts
+.br
+	/home/[^/]+/\.ssh(/.*)?
+.br
+	/home/[^/]+/\.ansible/cp/.*
+.br
+	/home/[^/]+/\.shosts
+.br
+
+.br
 .B tmp_t
 
 	/sandbox(/.*)?
@@ -190,7 +224,27 @@ Policy governs the access confined processes have to these files.
 SELinux gogs policy is very flexible allowing users to setup their gogs processes in as secure a method as possible.
 .PP
 
+.PP
+.B STANDARD FILE CONTEXT
+
+SELinux defines the file context types for the gogs, if you wanted to
+store files with these types in a diffent paths, you need to execute the semanage command to sepecify alternate labeling and then use restorecon to put the labels on disk.
+
+.B semanage fcontext -a -t gogs_conf_t '/srv/mygogs_content(/.*)?'
+.br
+.B restorecon -R -v /srv/mygogs_content
+
+Note: SELinux often uses regular expressions to specify labels that match multiple files.
+
 .I The following file types are defined for gogs:
+
+
+.EX
+.PP
+.B gogs_conf_t
+.EE
+
+- Set files with the gogs_conf_t type, if you want to treat the files as gogs configuration data, usually stored under the /etc directory.
 
 
 .EX
@@ -199,6 +253,22 @@ SELinux gogs policy is very flexible allowing users to setup their gogs processe
 .EE
 
 - Set files with the gogs_exec_t type, if you want to transition an executable to the gogs_t domain.
+
+
+.EX
+.PP
+.B gogs_home_t
+.EE
+
+- Set files with the gogs_home_t type, if you want to store gogs files in the users home directory.
+
+
+.EX
+.PP
+.B gogs_log_t
+.EE
+
+- Set files with the gogs_log_t type, if you want to treat the data as gogs log data, usually stored under the /var/log directory.
 
 
 .PP
