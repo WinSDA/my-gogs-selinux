@@ -1,4 +1,4 @@
-.TH  "gogs_selinux"  "8"  "20-09-08" "gogs" "SELinux Policy gogs"
+.TH  "gogs_selinux"  "8"  "20-09-07" "gogs" "SELinux Policy gogs"
 .SH "NAME"
 gogs_selinux \- Security Enhanced Linux Policy for the gogs processes
 .SH "DESCRIPTION"
@@ -66,7 +66,7 @@ If you want to allow confined applications to run with kerberos, you must turn o
 .EE
 
 .PP
-If you want to allow system to run with NIS, you must turn on the nis_enabled boolean. Enabled by default.
+If you want to allow system to run with NIS, you must turn on the nis_enabled boolean. Disabled by default.
 
 .EX
 .B setsebool -P nis_enabled 1

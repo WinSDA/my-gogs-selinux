@@ -33,12 +33,11 @@ require {
 
 type gogs_t;
 type gogs_exec_t;
-type gogs_home_t;
-type gogs_data_t;
-type gogs_conf_t;
-type gogs_log_t;
-init_daemon_domain(gogs_t, gogs_exec_t, gogs_home_t, gogs_data_t, gogs_conf_t, gogs_log_t)
-#init_daemon_domain(gogs_t, gogs_exec_t)
+#type gogs_home_t;
+#type gogs_data_t;
+#type gogs_conf_t;
+#type gogs_log_t;
+init_daemon_domain(gogs_t, gogs_exec_t)
 
 permissive gogs_t;
 
@@ -82,7 +81,6 @@ allow gogs_t sysfs_t:file { open read };
 allow gogs_t user_home_dir_t:dir { add_name create getattr search write };
 allow gogs_t user_home_t:dir { getattr search };
 
-#allow gogs_t tmp_t:dir { add_name remove_name create getattr setattr search write open rmdir }
 
 
 allow gogs_t bin_t:file { execute execute_no_trans };
