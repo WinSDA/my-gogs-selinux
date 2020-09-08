@@ -46,6 +46,8 @@ make -f /usr/share/selinux/devel/Makefile gogs.pp || exit
 sepolicy manpage -p . -d gogs_t
 # Fixing the file context on /home/gogs/gogs/gogs
 /sbin/restorecon -F -R -v /home/gogs/gogs/gogs
+/sbin/restorecon -F -R -v /home/gogs/gogs/log
+/sbin/restorecon -F -R -v /home/gogs/gogs/custom/conf/app.ini
 
 # Generate a rpm package for the newly generated policy
 

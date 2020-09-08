@@ -20,7 +20,7 @@ require {
 	type tmp_t;
 	type shell_exec_t;
         type fs_t;
-	
+	type ssh_home_t;	
 
 	class filesystem associate;
 	class file { add_name remove_name append create execute execute_no_trans getattr map open read setattr unlink write rename search ioctl link };
@@ -34,9 +34,17 @@ require {
 type gogs_t;
 type gogs_exec_t;
 type gogs_home_t;
+type gogs_log_t;
+type gogs_conf_t;
+
 init_daemon_domain(gogs_t, gogs_exec_t)
 
 permissive gogs_t;
+
+files_type(gogs_home_t);
+files_type(gogs_conf_t);
+files_type(gogs_log_t);
+
 
 ########################################
 #
@@ -96,4 +104,7 @@ allow gogs_t user_home_t:lnk_file { create getattr unlink link };
 allow gogs_t tmp_t:dir { create search read add_name remove_name open write rmdir };
 allow gogs_t tmp_t:file { create link rename setattr unlink write open };
 allow gogs_t tmp_t:lnk_file { create unlink };
+
+allow gogs_t ssh_home_t:dir rw_dir_perms;
+allow gogs_t ssh_home_t:file manage_file_perms;
 
