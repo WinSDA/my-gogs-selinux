@@ -1,0 +1,21 @@
+
+module my-chcon1 1.0;
+
+require {
+	type unconfined_t;
+	type gogs_log_t;
+	type gogs_home_t;
+	class dir { getattr open read search };
+	class file getattr;
+}
+
+#============= unconfined_t ==============
+
+#!!!! This avc is allowed in the current policy
+allow unconfined_t gogs_home_t:dir { getattr open read search };
+
+#!!!! This avc is allowed in the current policy
+allow unconfined_t gogs_home_t:file getattr;
+
+#!!!! This avc is allowed in the current policy
+allow unconfined_t gogs_log_t:dir { getattr read };

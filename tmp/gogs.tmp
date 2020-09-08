@@ -1037,7 +1037,7 @@
 #
 #line 146
 
-#line 401255 "tmp/all_interfaces.conf"
+#line 401260 "tmp/all_interfaces.conf"
 
 #line 1 "gogs.te"
 
@@ -3341,12 +3341,19 @@ require {
         type bin_t;
 	type user_home_t;
 	type user_home_dir_t;
-#	type tmp_t;
+	type tmp_t;
+	type shell_exec_t;
+        type fs_t;
+	type unconfined_t;
+	
 
-	class file { append create execute execute_no_trans getattr map open read setattr unlink write };
+	class filesystem associate;
+	class file { append create execute execute_no_trans getattr map open read setattr unlink write rename relabelto relabelfrom };
+        class dir { add_name remove_name create read rmdir search write getattr setattr relabelto relabelfrom };
+	class lnk_file { create getattr unlink };
         class tcp_socket { accept listen name_bind name_connect };
-        class dir { add_name remove_name create read rmdir search write getattr setattr };
         class process2 nnp_transition;
+
 }
 
 type gogs_t;
@@ -3356,278 +3363,279 @@ type gogs_data_t;
 type gogs_conf_t;
 type gogs_log_t;
  	 	
-#line 34
-##### begin init_daemon_domain(gogs_t,gogs_exec_t) depth: 1
-#line 34
+#line 41
+##### begin init_daemon_domain(gogs_t,gogs_exec_t,gogs_home_t,gogs_data_t,gogs_conf_t,gogs_log_t) depth: 1
+#line 41
  	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		require {
-#line 34
+#line 41
 			
-#line 34
+#line 41
 		attribute direct_run_init, direct_init, direct_init_entry;
-#line 34
+#line 41
 		type init_t;
-#line 34
+#line 41
 		role system_r;
-#line 34
+#line 41
 		attribute daemon;
-#line 34
+#line 41
 		attribute initrc_transition_domain;
-#line 34
+#line 41
 		attribute initrc_domain;
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		} # end require
-#line 34
+#line 41
 	
-#line 34
+#line 41
 
-#line 34
+#line 41
 
-#line 34
+#line 41
 	typeattribute gogs_t daemon;
-#line 34
+#line 41
 	typeattribute gogs_exec_t direct_init_entry;
-#line 34
+#line 41
 
-#line 34
+#line 41
 	 	 	
-#line 34
+#line 41
 ##### begin domain_type(gogs_t) depth: 2
-#line 34
+#line 41
  	
-#line 34
+#line 41
 	# start with basic domain
-#line 34
+#line 41
 	 	 	
-#line 34
+#line 41
 ##### begin domain_base_type(gogs_t) depth: 3
-#line 34
+#line 41
  	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		require {
-#line 34
+#line 41
 			
-#line 34
+#line 41
 		attribute domain;
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		} # end require
-#line 34
+#line 41
 	
-#line 34
+#line 41
 
-#line 34
+#line 41
 
-#line 34
+#line 41
 	typeattribute gogs_t domain;
-#line 34
+#line 41
 
-#line 34
+#line 41
 	 	
-#line 34
+#line 41
 ##### end domain_base_type(gogs_t) depth: 2
-#line 34
+#line 41
  	
-#line 34
+#line 41
 
-#line 34
+#line 41
 	# Only way to get corenet_unlabeled packets disabled to work
-#line 34
+#line 41
 	 	 	
-#line 34
+#line 41
 ##### begin corenet_all_recvfrom_unlabeled(gogs_t) depth: 3
-#line 34
+#line 41
  	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		require {
-#line 34
+#line 41
 			
-#line 34
+#line 41
                 attribute corenet_unlabeled_type;
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		} # end require
-#line 34
+#line 41
 	
-#line 34
+#line 41
 
-#line 34
+#line 41
 	typeattribute gogs_t corenet_unlabeled_type;
-#line 34
+#line 41
 
-#line 34
+#line 41
 	 	
-#line 34
+#line 41
 ##### end corenet_all_recvfrom_unlabeled(gogs_t) depth: 2
-#line 34
+#line 41
  	
-#line 34
+#line 41
 
-#line 34
+#line 41
 	 	
-#line 34
+#line 41
 ##### end domain_type(gogs_t) depth: 1
-#line 34
+#line 41
  	
-#line 34
+#line 41
 	 	 	
-#line 34
+#line 41
 ##### begin domain_entry_file(gogs_t,gogs_exec_t) depth: 2
-#line 34
+#line 41
  	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		require {
-#line 34
+#line 41
 			
-#line 34
+#line 41
 		attribute entry_type;
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		} # end require
-#line 34
+#line 41
 	
-#line 34
+#line 41
 
-#line 34
+#line 41
 
-#line 34
+#line 41
 	allow gogs_t gogs_exec_t:file entrypoint;
-#line 34
+#line 41
 	allow gogs_t gogs_exec_t:file { { getattr open map read execute ioctl } ioctl lock };
-#line 34
+#line 41
 
-#line 34
+#line 41
 	typeattribute gogs_exec_t entry_type;
-#line 34
+#line 41
 
-#line 34
+#line 41
 	 	 	
-#line 34
+#line 41
 ##### begin corecmd_executable_file(gogs_exec_t) depth: 3
-#line 34
+#line 41
  	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		require {
-#line 34
+#line 41
 			
-#line 34
+#line 41
 		attribute exec_type;
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		} # end require
-#line 34
+#line 41
 	
-#line 34
+#line 41
 
-#line 34
+#line 41
 
-#line 34
+#line 41
 	typeattribute gogs_exec_t exec_type;
-#line 34
+#line 41
 
-#line 34
+#line 41
 	 	 	
-#line 34
+#line 41
 ##### begin files_type(gogs_exec_t) depth: 4
-#line 34
+#line 41
  	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		require {
-#line 34
+#line 41
 			
-#line 34
+#line 41
 		attribute file_type, non_security_file_type, non_auth_file_type;
-#line 34
+#line 41
 	
-#line 34
+#line 41
 		} # end require
-#line 34
+#line 41
 	
-#line 34
+#line 41
 
-#line 34
+#line 41
 
-#line 34
+#line 41
 	typeattribute gogs_exec_t file_type, non_security_file_type, non_auth_file_type;
-#line 34
+#line 41
 
-#line 34
+#line 41
 	 	
-#line 34
+#line 41
 ##### end files_type(gogs_exec_t) depth: 3
-#line 34
+#line 41
  	
-#line 34
+#line 41
 
-#line 34
+#line 41
 	 	
-#line 34
+#line 41
 ##### end corecmd_executable_file(gogs_exec_t) depth: 2
-#line 34
+#line 41
  	
-#line 34
+#line 41
 
-#line 34
+#line 41
 	#optional_policy(`
-#line 34
+#line 41
 	#	unconfined_exec_typebounds(gogs_exec_t)
-#line 34
+#line 41
 	#')
-#line 34
+#line 41
 
-#line 34
+#line 41
 	 	
-#line 34
+#line 41
 ##### end domain_entry_file(gogs_t,gogs_exec_t) depth: 1
-#line 34
+#line 41
  	
-#line 34
+#line 41
 
-#line 34
+#line 41
 	type_transition initrc_domain gogs_exec_t:process gogs_t;
-#line 34
+#line 41
 
-#line 34
+#line 41
 	
-#line 34
+#line 41
 
-#line 34
+#line 41
 	 	
-#line 34
-##### end init_daemon_domain(gogs_t,gogs_exec_t) depth: 0
-#line 34
+#line 41
+##### end init_daemon_domain(gogs_t,gogs_exec_t,gogs_home_t,gogs_data_t,gogs_conf_t,gogs_log_t) depth: 0
+#line 41
  	
+#init_daemon_domain(gogs_t, gogs_exec_t)
 
 permissive gogs_t;
 
@@ -3639,1660 +3647,1672 @@ allow gogs_t self:fifo_file { open { getattr read write append ioctl lock } };
 allow gogs_t self:unix_stream_socket { { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } } listen accept };
 
  	 	
-#line 45
+#line 53
 ##### begin domain_use_interactive_fds(gogs_t) depth: 1
-#line 45
+#line 53
  	
-#line 45
+#line 53
 	
-#line 45
+#line 53
 	
-#line 45
+#line 53
 		require {
-#line 45
+#line 53
 			
-#line 45
+#line 53
 		attribute privfd;
-#line 45
+#line 53
 	
-#line 45
+#line 53
 		} # end require
-#line 45
+#line 53
 	
-#line 45
+#line 53
 
-#line 45
+#line 53
 
-#line 45
+#line 53
 	allow gogs_t privfd:fd use;
-#line 45
+#line 53
 
-#line 45
+#line 53
 	 	
-#line 45
+#line 53
 ##### end domain_use_interactive_fds(gogs_t) depth: 0
-#line 45
+#line 53
  	
 
  	 	
-#line 47
+#line 55
 ##### begin files_read_etc_files(gogs_t) depth: 1
-#line 47
+#line 55
  	
-#line 47
+#line 55
 	
-#line 47
+#line 55
 	
-#line 47
+#line 55
 		require {
-#line 47
+#line 55
 			
-#line 47
+#line 55
 		type etc_t;
-#line 47
+#line 55
 	
-#line 47
+#line 55
 		} # end require
-#line 47
+#line 55
 	
-#line 47
+#line 55
 
-#line 47
+#line 55
 
-#line 47
+#line 55
 	allow gogs_t etc_t:dir { getattr search open read lock ioctl };
-#line 47
+#line 55
 	
-#line 47
+#line 55
 	allow gogs_t etc_t:dir { getattr search open };
-#line 47
+#line 55
 	allow gogs_t etc_t:file { open { getattr read ioctl lock } };
-#line 47
+#line 55
 
-#line 47
+#line 55
 	
-#line 47
+#line 55
 	allow gogs_t etc_t:dir { getattr search open };
-#line 47
+#line 55
 	allow gogs_t etc_t:lnk_file { getattr read };
-#line 47
+#line 55
 
-#line 47
+#line 55
 	 	 	
-#line 47
+#line 55
 ##### begin files_read_etc_runtime_files(gogs_t) depth: 2
-#line 47
+#line 55
  	
-#line 47
+#line 55
 	
-#line 47
+#line 55
 	
-#line 47
+#line 55
 		require {
-#line 47
+#line 55
 			
-#line 47
+#line 55
 		type etc_t, etc_runtime_t;
-#line 47
+#line 55
 	
-#line 47
+#line 55
 		} # end require
-#line 47
+#line 55
 	
-#line 47
+#line 55
 
-#line 47
+#line 55
 
-#line 47
+#line 55
 	allow gogs_t etc_t:dir { getattr search open read lock ioctl };
-#line 47
+#line 55
 	
-#line 47
+#line 55
 	allow gogs_t etc_t:dir { getattr search open };
-#line 47
+#line 55
 	allow gogs_t etc_runtime_t:file { open { getattr read ioctl lock } };
-#line 47
+#line 55
 
-#line 47
+#line 55
 	
-#line 47
+#line 55
 	allow gogs_t etc_t:dir { getattr search open };
-#line 47
+#line 55
 	allow gogs_t etc_runtime_t:lnk_file { getattr read };
-#line 47
+#line 55
 
-#line 47
+#line 55
 
-#line 47
+#line 55
 	 	
-#line 47
+#line 55
 ##### end files_read_etc_runtime_files(gogs_t) depth: 1
-#line 47
+#line 55
  	
-#line 47
+#line 55
 
-#line 47
+#line 55
 	 	
-#line 47
+#line 55
 ##### end files_read_etc_files(gogs_t) depth: 0
-#line 47
+#line 55
  	
 
  	 	
-#line 49
+#line 57
 ##### begin auth_use_nsswitch(gogs_t) depth: 1
-#line 49
+#line 57
  	
-#line 49
+#line 57
 	
-#line 49
+#line 57
 	
-#line 49
+#line 57
 		require {
-#line 49
+#line 57
 			
-#line 49
+#line 57
 		attribute nsswitch_domain;
-#line 49
+#line 57
 	
-#line 49
+#line 57
 		} # end require
-#line 49
+#line 57
 	
-#line 49
+#line 57
 
-#line 49
+#line 57
 
-#line 49
+#line 57
 	typeattribute gogs_t nsswitch_domain;
-#line 49
+#line 57
 
-#line 49
+#line 57
 	 	 	
-#line 49
+#line 57
 ##### begin corenet_all_recvfrom_netlabel(gogs_t) depth: 2
-#line 49
+#line 57
  	
-#line 49
+#line 57
 	
-#line 49
+#line 57
 	
-#line 49
+#line 57
 		require {
-#line 49
+#line 57
 			
-#line 49
+#line 57
 		attribute netlabel_peer_type;
-#line 49
+#line 57
 	
-#line 49
+#line 57
 		} # end require
-#line 49
+#line 57
 	
-#line 49
+#line 57
 
-#line 49
+#line 57
 
-#line 49
+#line 57
 	typeattribute gogs_t netlabel_peer_type;
-#line 49
+#line 57
 
-#line 49
+#line 57
 	 	
-#line 49
+#line 57
 ##### end corenet_all_recvfrom_netlabel(gogs_t) depth: 1
-#line 49
+#line 57
  	
-#line 49
+#line 57
 
-#line 49
+#line 57
 	 	
-#line 49
+#line 57
 ##### end auth_use_nsswitch(gogs_t) depth: 0
-#line 49
+#line 57
  	
 
  	 	
-#line 51
+#line 59
 ##### begin logging_send_audit_msgs(gogs_t) depth: 1
-#line 51
+#line 59
  	
-#line 51
+#line 59
 	allow gogs_t self:capability audit_write;
-#line 51
+#line 59
 	allow gogs_t self:netlink_audit_socket { { { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } } nlmsg_read } nlmsg_relay nlmsg_tty_audit };
-#line 51
+#line 59
 
-#line 51
+#line 59
 	 	
-#line 51
+#line 59
 ##### end logging_send_audit_msgs(gogs_t) depth: 0
-#line 51
+#line 59
  	
 
  	 	
-#line 53
+#line 61
 ##### begin miscfiles_read_localization(gogs_t) depth: 1
-#line 53
+#line 61
  	
-#line 53
+#line 61
 	
-#line 53
+#line 61
 	
-#line 53
+#line 61
 		require {
-#line 53
+#line 61
 			
-#line 53
+#line 61
 		type locale_t;
-#line 53
+#line 61
 	
-#line 53
+#line 61
 		} # end require
-#line 53
+#line 61
 	
-#line 53
+#line 61
 
-#line 53
+#line 61
 
-#line 53
+#line 61
 	 	 	
-#line 53
+#line 61
 ##### begin files_read_etc_symlinks(gogs_t) depth: 2
-#line 53
+#line 61
  	
-#line 53
+#line 61
 	
-#line 53
+#line 61
 	
-#line 53
+#line 61
 		require {
-#line 53
+#line 61
 			
-#line 53
+#line 61
 		type etc_t;
-#line 53
+#line 61
 	
-#line 53
+#line 61
 		} # end require
-#line 53
+#line 61
 	
-#line 53
+#line 61
 
-#line 53
+#line 61
 
-#line 53
+#line 61
 	
-#line 53
+#line 61
 	allow gogs_t etc_t:dir { getattr search open };
-#line 53
+#line 61
 	allow gogs_t etc_t:lnk_file { getattr read };
-#line 53
+#line 61
 
-#line 53
+#line 61
 
-#line 53
+#line 61
 	 	
-#line 53
+#line 61
 ##### end files_read_etc_symlinks(gogs_t) depth: 1
-#line 53
+#line 61
  	
-#line 53
+#line 61
 	 	 	
-#line 53
+#line 61
 ##### begin files_search_usr(gogs_t) depth: 2
-#line 53
+#line 61
  	
-#line 53
+#line 61
 	
-#line 53
+#line 61
 	
-#line 53
+#line 61
 		require {
-#line 53
+#line 61
 			
-#line 53
+#line 61
 		type usr_t;
-#line 53
+#line 61
 	
-#line 53
+#line 61
 		} # end require
-#line 53
+#line 61
 	
-#line 53
+#line 61
 
-#line 53
+#line 61
 
-#line 53
+#line 61
 	allow gogs_t usr_t:dir { getattr search open };
-#line 53
+#line 61
 
-#line 53
+#line 61
 	 	
-#line 53
+#line 61
 ##### end files_search_usr(gogs_t) depth: 1
-#line 53
+#line 61
  	
-#line 53
+#line 61
 	allow gogs_t locale_t:dir { getattr search open read lock ioctl };
-#line 53
+#line 61
 	
-#line 53
+#line 61
 	allow gogs_t locale_t:dir { getattr search open };
-#line 53
+#line 61
 	allow gogs_t locale_t:file { open { getattr read ioctl lock } };
-#line 53
+#line 61
 
-#line 53
+#line 61
 	
-#line 53
+#line 61
 	allow gogs_t locale_t:dir { getattr search open };
-#line 53
+#line 61
 	allow gogs_t locale_t:lnk_file { getattr read };
-#line 53
+#line 61
 
-#line 53
+#line 61
 	allow gogs_t locale_t:file map;
-#line 53
+#line 61
 
-#line 53
+#line 61
 	 	
-#line 53
+#line 61
 ##### end miscfiles_read_localization(gogs_t) depth: 0
-#line 53
+#line 61
  	
 
  	 	
-#line 55
+#line 63
 ##### begin sysnet_dns_name_resolve(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type net_conf_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t self:tcp_socket { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } };
-#line 55
+#line 63
 	allow gogs_t self:udp_socket { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } };
-#line 55
+#line 63
 	allow gogs_t self:netlink_route_socket { { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } } nlmsg_read };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_tcp_sendrecv_generic_if(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type netif_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t netif_t:netif { tcp_send tcp_recv egress ingress };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_tcp_sendrecv_generic_if(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_udp_sendrecv_generic_if(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_udp_send_generic_if(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type netif_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t netif_t:netif { udp_send egress };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_udp_send_generic_if(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_udp_receive_generic_if(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type netif_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t netif_t:netif { udp_recv ingress };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_udp_receive_generic_if(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_udp_sendrecv_generic_if(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_tcp_sendrecv_generic_node(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type node_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t node_t:node { tcp_send tcp_recv sendto recvfrom };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_tcp_sendrecv_generic_node(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_udp_sendrecv_generic_node(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_udp_send_generic_node(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type node_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t node_t:node { udp_send sendto };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_udp_send_generic_node(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_udp_receive_generic_node(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type node_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t node_t:node { udp_recv recvfrom };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_udp_receive_generic_node(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_udp_sendrecv_generic_node(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_tcp_sendrecv_dns_port(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type dns_port_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t dns_port_t:tcp_socket { send_msg recv_msg };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_tcp_sendrecv_dns_port(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_udp_sendrecv_dns_port(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_udp_send_dns_port(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type dns_port_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t dns_port_t:udp_socket send_msg;
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_udp_send_dns_port(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_udp_receive_dns_port(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type dns_port_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t dns_port_t:udp_socket recv_msg;
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_udp_receive_dns_port(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_udp_sendrecv_dns_port(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_tcp_connect_dns_port(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type dns_port_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t dns_port_t:tcp_socket name_connect;
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_tcp_connect_dns_port(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_tcp_connect_dnssec_port(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type dnssec_port_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t dnssec_port_t:tcp_socket name_connect;
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_tcp_connect_dnssec_port(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_sendrecv_dns_client_packets(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_send_dns_client_packets(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type dns_client_packet_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t dns_client_packet_t:packet send;
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_send_dns_client_packets(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin corenet_receive_dns_client_packets(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type dns_client_packet_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t dns_client_packet_t:packet recv;
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_receive_dns_client_packets(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end corenet_sendrecv_dns_client_packets(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin files_search_all_pids(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		attribute pidfile;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t pidfile:dir { getattr search open };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end files_search_all_pids(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin miscfiles_read_generic_certs(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type cert_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t cert_t:dir { getattr search open read lock ioctl };
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	allow gogs_t cert_t:dir { getattr search open };
-#line 55
+#line 63
 	allow gogs_t cert_t:file { open { getattr read ioctl lock } };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	allow gogs_t cert_t:dir { getattr search open };
-#line 55
+#line 63
 	allow gogs_t cert_t:lnk_file { getattr read };
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end miscfiles_read_generic_certs(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin sysnet_read_config(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type net_conf_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin files_search_etc(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type etc_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t etc_t:dir { getattr search open };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end files_search_etc(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	allow gogs_t net_conf_t:file { open { getattr read ioctl lock } };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 	
-#line 55
+#line 63
          	 	
-#line 55
+#line 63
 ##### begin files_search_all_pids(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		attribute pidfile;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t pidfile:dir { getattr search open };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end files_search_all_pids(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
          	 	
-#line 55
+#line 63
 ##### begin init_search_pid_dirs(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
     
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
         type init_var_run_t;
-#line 55
+#line 63
     
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
     allow gogs_t init_var_run_t:dir { getattr search open };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end init_search_pid_dirs(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 		allow gogs_t net_conf_t:dir { getattr search open read lock ioctl };
-#line 55
+#line 63
 		allow gogs_t net_conf_t:lnk_file { getattr read };
-#line 55
+#line 63
 		
-#line 55
+#line 63
 	allow gogs_t net_conf_t:dir { getattr search open };
-#line 55
+#line 63
 	allow gogs_t net_conf_t:file { open { getattr read ioctl lock } };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end sysnet_read_config(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	optional {
-#line 55
+#line 63
 		
-#line 55
+#line 63
 		 	 	
-#line 55
+#line 63
 ##### begin avahi_stream_connect(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type avahi_t, avahi_var_run_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin files_search_pids(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type var_t, var_run_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t var_t:lnk_file { getattr read };
-#line 55
+#line 63
 	allow gogs_t var_run_t:lnk_file { getattr read };
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	allow gogs_t var_t:dir { getattr search open };
-#line 55
+#line 63
 	allow gogs_t var_run_t:dir { getattr search open };
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end files_search_pids(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	allow gogs_t avahi_var_run_t:dir { getattr search open };
-#line 55
+#line 63
 	allow gogs_t avahi_var_run_t:sock_file { getattr write open append };
-#line 55
+#line 63
 	allow gogs_t avahi_t:unix_stream_socket connectto;
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end avahi_stream_connect(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	} # end optional
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
     
-#line 55
+#line 63
 	optional {
-#line 55
+#line 63
 		
-#line 55
+#line 63
          	 	
-#line 55
+#line 63
 ##### begin dbus_stream_connect_system_dbusd(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type system_dbusd_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t system_dbusd_t:unix_stream_socket connectto;
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end dbus_stream_connect_system_dbusd(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
     
-#line 55
+#line 63
 	} # end optional
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	optional {
-#line 55
+#line 63
 		
-#line 55
+#line 63
 		 	 	
-#line 55
+#line 63
 ##### begin nscd_use(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		
-#line 55
+#line 63
 bool nscd_use_shm;
-#line 55
+#line 63
 
-#line 55
+#line 63
   
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 	if (nscd_use_shm) {
-#line 55
+#line 63
 		
-#line 55
+#line 63
 		 	 	
-#line 55
+#line 63
 ##### begin nscd_shm_use(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type nscd_t, nscd_var_run_t;
-#line 55
+#line 63
 		class nscd { getserv getpwd getgrp gethost shmempwd shmemgrp shmemhost shmemserv shmemnetgrp getnetgrp };
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t nscd_var_run_t:dir { getattr search open read lock ioctl };
-#line 55
+#line 63
     allow gogs_t nscd_t:nscd { shmempwd shmemgrp shmemhost shmemserv  shmemnetgrp};
-#line 55
+#line 63
 	# Receive fd from nscd and map the backing file with read access.
-#line 55
+#line 63
 	allow gogs_t nscd_t:fd use;
-#line 55
+#line 63
 
-#line 55
+#line 63
 	# cjp: these were originally inherited from the
-#line 55
+#line 63
 	# nscd_socket_domain macro. need to investigate
-#line 55
+#line 63
 	# if they are all actually required
-#line 55
+#line 63
 	allow gogs_t self:unix_stream_socket { { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } } listen accept };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	# dg: This may not be required.
-#line 55
+#line 63
 	allow gogs_t nscd_var_run_t:sock_file { getattr open read };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	allow gogs_t nscd_var_run_t:dir { getattr search open };
-#line 55
+#line 63
 	allow gogs_t nscd_var_run_t:sock_file { getattr write open append };
-#line 55
+#line 63
 	allow gogs_t nscd_t:unix_stream_socket connectto;
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin files_search_pids(gogs_t) depth: 4
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type var_t, var_run_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t var_t:lnk_file { getattr read };
-#line 55
+#line 63
 	allow gogs_t var_run_t:lnk_file { getattr read };
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	allow gogs_t var_t:dir { getattr search open };
-#line 55
+#line 63
 	allow gogs_t var_run_t:dir { getattr search open };
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end files_search_pids(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	allow gogs_t nscd_t:nscd { getpwd getgrp gethost getserv getnetgrp };
-#line 55
+#line 63
 	dontaudit gogs_t nscd_var_run_t:file { open { getattr read ioctl lock } };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end nscd_shm_use(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	} else {
-#line 55
+#line 63
 		
-#line 55
+#line 63
 		 	 	
-#line 55
+#line 63
 ##### begin nscd_socket_use(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type nscd_t, nscd_var_run_t;
-#line 55
+#line 63
 		class nscd { getserv getpwd getgrp gethost shmempwd shmemgrp shmemhost shmemserv };
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t self:unix_stream_socket { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } };
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t nscd_t:nscd { getpwd getgrp gethost };
-#line 55
+#line 63
 	dontaudit gogs_t nscd_t:fd use;
-#line 55
+#line 63
 	dontaudit gogs_t nscd_t:nscd { getserv shmempwd shmemgrp shmemhost shmemserv };
-#line 55
+#line 63
 	 	 	
-#line 55
+#line 63
 ##### begin files_search_pids(gogs_t) depth: 4
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		require {
-#line 55
+#line 63
 			
-#line 55
+#line 63
 		type var_t, var_run_t;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 		} # end require
-#line 55
+#line 63
 	
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t var_t:lnk_file { getattr read };
-#line 55
+#line 63
 	allow gogs_t var_run_t:lnk_file { getattr read };
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	allow gogs_t var_t:dir { getattr search open };
-#line 55
+#line 63
 	allow gogs_t var_run_t:dir { getattr search open };
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end files_search_pids(gogs_t) depth: 3
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	allow gogs_t nscd_var_run_t:dir { getattr search open };
-#line 55
+#line 63
 	allow gogs_t nscd_var_run_t:sock_file { getattr write open append };
-#line 55
+#line 63
 	allow gogs_t nscd_t:unix_stream_socket connectto;
-#line 55
+#line 63
 
-#line 55
+#line 63
 	allow gogs_t nscd_t:unix_stream_socket { connectto { create { ioctl read getattr lock write setattr append bind connect getopt setopt shutdown } } };
-#line 55
+#line 63
 	dontaudit gogs_t nscd_var_run_t:file { open { getattr read ioctl lock } };
-#line 55
+#line 63
     allow gogs_t nscd_var_run_t:file map;
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	allow nscd_t gogs_t:dir { getattr search open read lock ioctl };
-#line 55
+#line 63
 	allow nscd_t gogs_t:file { open { getattr read ioctl lock } };
-#line 55
+#line 63
 	allow nscd_t gogs_t:lnk_file { getattr read };
-#line 55
+#line 63
 	allow nscd_t gogs_t:process getattr;
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end nscd_socket_use(gogs_t) depth: 2
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	}
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end nscd_use(gogs_t) depth: 1
-#line 55
+#line 63
  	
-#line 55
+#line 63
 	
-#line 55
+#line 63
 	} # end optional
-#line 55
+#line 63
 
-#line 55
+#line 63
 
-#line 55
+#line 63
 	 	
-#line 55
+#line 63
 ##### end sysnet_dns_name_resolve(gogs_t) depth: 0
-#line 55
+#line 63
  	
+
+
+#============= gogs_home_t ==============
+allow gogs_home_t fs_t:filesystem associate;
+
+#============= unconfined_t ==============
+allow unconfined_t gogs_data_t:dir { getattr open read search relabelto relabelfrom };
+allow unconfined_t gogs_data_t:file { getattr open read relabelto relabelfrom };
+allow unconfined_t gogs_home_t:dir { getattr open read search relabelto relabelfrom };
+allow unconfined_t gogs_home_t:file { getattr open read relabelto relabelfrom };
+allow unconfined_t gogs_log_t:dir { getattr open read search relabelto relabelfrom };
+allow unconfined_t gogs_log_t:file { getattr open read relabelto };
 
 ############## GOGS POLICIES #################
 #============= init_t ==============
@@ -5316,4 +5336,17 @@ allow gogs_t user_home_t:dir { getattr search };
 
 allow gogs_t bin_t:file { execute execute_no_trans };
 allow gogs_t mysqld_port_t:tcp_socket name_connect;
+
+#============= gogs_t ==============
+allow gogs_t shell_exec_t:file { execute execute_no_trans };
+allow gogs_t tmp_t:dir { read remove_name };
+allow gogs_t tmp_t:file { create link rename setattr unlink write };
+allow gogs_t tmp_t:lnk_file { create unlink };
+allow gogs_t user_home_dir_t:dir { open read remove_name rmdir };
+allow gogs_t user_home_dir_t:file { create execute execute_no_trans getattr link open read rename setattr unlink write };
+allow gogs_t user_home_dir_t:lnk_file { create getattr unlink };
+
+#============= init_t ==============
+allow init_t user_home_t:file execute;
+
 

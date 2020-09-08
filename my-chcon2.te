@@ -1,0 +1,38 @@
+
+module my-chcon2 1.0;
+
+require {
+	type fs_t;
+	type unconfined_t;
+	type gogs_home_t;
+	type gogs_data_t;
+	type gogs_log_t;
+	class dir relabelto;
+	class file relabelto;
+	class filesystem associate;
+}
+
+#============= gogs_home_t ==============
+
+#!!!! This avc is allowed in the current policy
+allow gogs_home_t fs_t:filesystem associate;
+
+#============= gogs_log_t ==============
+allow gogs_log_t fs_t:filesystem associate;
+
+#============= unconfined_t ==============
+
+#!!!! This avc is allowed in the current policy
+allow unconfined_t gogs_data_t:dir relabelto;
+
+#!!!! This avc is allowed in the current policy
+allow unconfined_t gogs_data_t:file relabelto;
+
+#!!!! This avc is allowed in the current policy
+allow unconfined_t gogs_home_t:dir relabelto;
+
+#!!!! This avc is allowed in the current policy
+allow unconfined_t gogs_home_t:file relabelto;
+
+#!!!! This avc is allowed in the current policy
+allow unconfined_t gogs_log_t:dir relabelto;

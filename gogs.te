@@ -17,12 +17,19 @@ require {
         type bin_t;
 	type user_home_t;
 	type user_home_dir_t;
-#	type tmp_t;
+	type tmp_t;
+	type shell_exec_t;
+        type fs_t;
+	type unconfined_t;
+	
 
-	class file { append create execute execute_no_trans getattr map open read setattr unlink write };
+	class filesystem associate;
+	class file { append create execute execute_no_trans getattr map open read setattr unlink write rename relabelto relabelfrom };
+        class dir { add_name remove_name create read rmdir search write getattr setattr relabelto relabelfrom };
+	class lnk_file { create getattr unlink };
         class tcp_socket { accept listen name_bind name_connect };
-        class dir { add_name remove_name create read rmdir search write getattr setattr };
         class process2 nnp_transition;
+
 }
 
 type gogs_t;
@@ -31,7 +38,8 @@ type gogs_home_t;
 type gogs_data_t;
 type gogs_conf_t;
 type gogs_log_t;
-init_daemon_domain(gogs_t, gogs_exec_t)
+init_daemon_domain(gogs_t, gogs_exec_t, gogs_home_t, gogs_data_t, gogs_conf_t, gogs_log_t)
+#init_daemon_domain(gogs_t, gogs_exec_t)
 
 permissive gogs_t;
 
@@ -53,6 +61,18 @@ logging_send_audit_msgs(gogs_t)
 miscfiles_read_localization(gogs_t)
 
 sysnet_dns_name_resolve(gogs_t)
+
+
+#============= gogs_home_t ==============
+allow gogs_home_t fs_t:filesystem associate;
+
+#============= unconfined_t ==============
+allow unconfined_t gogs_data_t:dir { getattr open read search relabelto relabelfrom };
+allow unconfined_t gogs_data_t:file { getattr open read relabelto relabelfrom };
+allow unconfined_t gogs_home_t:dir { getattr open read search relabelto relabelfrom };
+allow unconfined_t gogs_home_t:file { getattr open read relabelto relabelfrom };
+allow unconfined_t gogs_log_t:dir { getattr open read search relabelto relabelfrom };
+allow unconfined_t gogs_log_t:file { getattr open read relabelto };
 
 ############## GOGS POLICIES #################
 #============= init_t ==============
@@ -76,4 +96,17 @@ allow gogs_t user_home_t:dir { getattr search };
 
 allow gogs_t bin_t:file { execute execute_no_trans };
 allow gogs_t mysqld_port_t:tcp_socket name_connect;
+
+#============= gogs_t ==============
+allow gogs_t shell_exec_t:file { execute execute_no_trans };
+allow gogs_t tmp_t:dir { read remove_name };
+allow gogs_t tmp_t:file { create link rename setattr unlink write };
+allow gogs_t tmp_t:lnk_file { create unlink };
+allow gogs_t user_home_dir_t:dir { open read remove_name rmdir };
+allow gogs_t user_home_dir_t:file { create execute execute_no_trans getattr link open read rename setattr unlink write };
+allow gogs_t user_home_dir_t:lnk_file { create getattr unlink };
+
+#============= init_t ==============
+allow init_t user_home_t:file execute;
+
 
